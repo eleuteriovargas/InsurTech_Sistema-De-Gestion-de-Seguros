@@ -1,0 +1,33 @@
+-- V1__Create_asegurados_table.sql
+CREATE TABLE asegurados (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY COMMENT 'Identificador unico del asegurado',
+    tipo_asegurado VARCHAR(20) NOT NULL COMMENT 'PERSONA_NATURAL o PERSONA_JURIDICA',
+    numero_documento VARCHAR(20) NOT NULL COMMENT 'Numero de documento unico',
+    nombre VARCHAR(100) NOT NULL COMMENT 'Nombre o razon social',
+    apellido VARCHAR(100) NULL COMMENT 'Apellido (solo persona natural)',
+    razon_social VARCHAR(200) NULL COMMENT 'Razon social (solo persona juridica)',
+    fecha_nacimiento DATE NULL COMMENT 'Fecha de nacimiento',
+    email VARCHAR(150) NOT NULL COMMENT 'Email principal',
+    telefono VARCHAR(20) NOT NULL COMMENT 'Telefono principal',
+    direccion_calle VARCHAR(255) NULL,
+    direccion_ciudad VARCHAR(100) NULL,
+    direccion_estado VARCHAR(100) NULL,
+    direccion_codigo_postal VARCHAR(10) NULL,
+    direccion_pais VARCHAR(50) NULL,
+    contacto_email VARCHAR(150) NULL,
+    contacto_telefono VARCHAR(20) NULL,
+    contacto_telefono_alt VARCHAR(20) NULL,
+    estado VARCHAR(15) NOT NULL DEFAULT 'ACTIVO' COMMENT 'ACTIVO, SUSPENDIDO, CANCELADO',
+    nivel_riesgo VARCHAR(10) NOT NULL DEFAULT 'BAJO' COMMENT 'BAJO, MEDIO, ALTO',
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    created_by VARCHAR(50) NULL,
+    last_modified_by VARCHAR(50) NULL,
+    version BIGINT DEFAULT 0,
+    CONSTRAINT uk_asegurado_documento UNIQUE (numero_documento),
+    CONSTRAINT uk_asegurado_email UNIQUE (email),
+    CONSTRAINT chk_tipo_asegurado CHECK (tipo_asegurado IN ('PERSONA_NATURAL', 'PERSONA_JURIDICA')),
+    CONSTRAINT chk_estado_asegurado CHECK (estado IN ('ACTIVO', 'SUSPENDIDO', 'CANCELADO')),
+    CONSTRAINT chk_nivel_riesgo CHECK (nivel_riesgo IN ('BAJO', 'MEDIO', 'ALTO'))
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci
+  COMMENT='Tabla de asegurados (personas naturales y juridicas)';
